@@ -1,5 +1,6 @@
 import unittest
-from scraper import fetch_spell_by_name
+
+from rpg_parser.adapters.fetchers.aon import AoNElasticsearchClient
 
 class TestScraperIntegration(unittest.TestCase):
     def test_fetch_fireball(self):
@@ -10,7 +11,7 @@ class TestScraperIntegration(unittest.TestCase):
         spell_name = "Fireball"
         
         # This will raise an exception if it fails
-        spell_data = fetch_spell_by_name(spell_name)
+        spell_data = AoNElasticsearchClient().fetch_spell_by_name(spell_name)
         
         # Verify basic properties of the Fireball spell
         self.assertIsNotNone(spell_data)
