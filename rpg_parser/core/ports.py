@@ -1,3 +1,4 @@
+from collections.abc import Iterable
 from dataclasses import dataclass
 from typing import Any, Protocol
 
@@ -26,6 +27,15 @@ class ExportTarget:
     location: str
 
 
+@dataclass(frozen=True)
+class ScrapeRequest:
+    """Input needed by a scraper adapter to discover fetchable records."""
+
+    location: str | None = None
+    filters: dict[str, Any] | None = None
+    limit: int | None = None
+
+
 class Fetcher(Protocol):
     def fetch(self, request: FetchRequest) -> RawDocument:
         """Fetch raw content from an external source."""
@@ -41,8 +51,21 @@ class Exporter(Protocol):
         """Export structured data to a target destination."""
 
 
+class Scraper(Protocol):
+    def discover(self, request: ScrapeRequest) -> Iterable[FetchRequest]:
+        """Discover fetch requests for a bulk scrape."""
+
+
 @dataclass(frozen=True)
 class PipelineSpec:
+    fetcher: Fetcher
+    parser: Parser
+    exporter: Exporter
+
+
+@dataclass(frozen=True)
+class ScrapePipelineSpec:
+    scraper: Scraper
     fetcher: Fetcher
     parser: Parser
     exporter: Exporter
