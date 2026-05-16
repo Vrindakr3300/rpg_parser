@@ -47,7 +47,7 @@ class Parser(Protocol):
 
 
 class Exporter(Protocol):
-    def export(self, data: dict[str, Any], target: ExportTarget) -> None:
+    def export(self, data: Any, target: ExportTarget) -> None:
         """Export structured data to a target destination."""
 
 

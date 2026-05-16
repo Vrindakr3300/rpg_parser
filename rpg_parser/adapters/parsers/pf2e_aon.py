@@ -6,6 +6,12 @@ from bs4 import BeautifulSoup
 from rpg_parser.core.ports import RawDocument
 
 
+def _derive_spell_id(name: str) -> str:
+    if not name:
+        return ""
+    return re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")
+
+
 class PF2eAoNSpellHtmlParser:
     """Parses PF2e spell detail pages from Archives of Nethys HTML."""
 
@@ -89,4 +95,4 @@ class PF2eAoNSpellHtmlParser:
             if description:
                 spell_data["Description"] = description
 
-        return spell_data
+        return {"id": _derive_spell_id(spell_data.get("Name", "")), **spell_data}

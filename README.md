@@ -28,10 +28,10 @@ Write a single spell to a specific JSON file:
 uv run python cli.py fetch "https://2e.aonprd.com/Spells.aspx?ID=1528" -o spell.json
 ```
 
-Scrape multiple spells discovered through AoN Elasticsearch:
+Scrape multiple spells discovered through AoN Elasticsearch into a single JSON array file (default `scraped.json`):
 
 ```bash
-uv run python cli.py scrape --limit 10 --tradition arcane -o scraped
+uv run python cli.py scrape --limit 10 --tradition arcane -o scraped.json
 ```
 
 The default pipeline options are `--system pf2e --type spell --source aon-html`.

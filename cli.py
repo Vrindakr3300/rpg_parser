@@ -1,5 +1,4 @@
 import argparse
-from pathlib import Path
 import re
 import sys
 
@@ -34,7 +33,7 @@ def build_scrape_parser() -> argparse.ArgumentParser:
     parser.add_argument("--location", help="Optional source root location for discovery.")
     parser.add_argument("--limit", type=int, help="Maximum records to discover.")
     parser.add_argument("--tradition", help="PF2e spell tradition filter for AoN discovery.")
-    parser.add_argument("-o", "--output-dir", default="scraped", help="Directory for scraped JSON files.")
+    parser.add_argument("-o", "--output", default="scraped.json", help="Output JSON file for scraped records.")
     add_pipeline_args(parser)
     return parser
 
@@ -58,9 +57,6 @@ def run_fetch(args: argparse.Namespace) -> None:
 
 
 def run_scrape(args: argparse.Namespace) -> None:
-    output_dir = Path(args.output_dir)
-    output_dir.mkdir(parents=True, exist_ok=True)
-
     filters = {}
     if args.tradition:
         filters["tradition"] = args.tradition
@@ -68,16 +64,14 @@ def run_scrape(args: argparse.Namespace) -> None:
     pipeline = get_scrape_pipeline(args.system, args.content_type, args.source)
     print(f"Scraping {args.system}/{args.content_type}/{args.source}...")
 
-    def target_factory(data: dict, index: int, _fetch_request: FetchRequest) -> ExportTarget:
-        name = data.get("Name") or f"record_{index}"
-        return ExportTarget(location=str(output_dir / create_valid_filename(name)))
-
     records = run_scrape_pipeline(
         pipeline,
         ScrapeRequest(location=args.location, filters=filters, limit=args.limit),
-        target_factory=target_factory,
     )
-    print(f"Done! Exported {len(records)} records to {output_dir}.")
+
+    print(f"Saving {len(records)} records to {args.output}...")
+    pipeline.exporter.export(records, ExportTarget(location=args.output))
+    print(f"Done! Exported {len(records)} records to {args.output}.")
 
 
 def main(argv: list[str] | None = None):
