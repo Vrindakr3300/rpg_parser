@@ -1,8 +1,9 @@
 import argparse
 import re
-from scraper import fetch_spell_html
-from parser import parse_aon_spell
-from exporter import save_as_json
+
+from rpg_parser.core.pipeline import run_pipeline
+from rpg_parser.core.ports import ExportTarget, FetchRequest
+from rpg_parser.registry import get_pipeline
 
 def create_valid_filename(spell_name: str) -> str:
     """Generates a valid filename from the spell name."""
@@ -13,17 +14,20 @@ def create_valid_filename(spell_name: str) -> str:
     return f"{name}.json"
 
 def main():
-    parser = argparse.ArgumentParser(description="AoN Spell Parser: Download and convert Pathfinder 2e spells to JSON.")
-    parser.add_argument("url", help="The URL of the Archives of Nethys spell page.")
+    parser = argparse.ArgumentParser(description="RPG Parser: Download and convert RPG data to JSON.")
+    parser.add_argument("url", help="The URL or source location to fetch.")
     parser.add_argument("-o", "--output", help="Optional output filename.")
+    parser.add_argument("--system", default="pf2e", help="RPG system to parse. Defaults to pf2e.")
+    parser.add_argument("--type", default="spell", dest="content_type", help="Content type to parse. Defaults to spell.")
+    parser.add_argument("--source", default="aon-html", help="Source adapter to use. Defaults to aon-html.")
     
     args = parser.parse_args()
     
     print(f"Fetching {args.url}...")
     try:
-        html = fetch_spell_html(args.url)
-        print("Extracting spell data...")
-        spell_data = parse_aon_spell(html)
+        pipeline = get_pipeline(args.system, args.content_type, args.source)
+        print("Extracting data...")
+        spell_data = run_pipeline(pipeline, FetchRequest(location=args.url))
         
         # Determine filename
         if args.output:
@@ -34,7 +38,7 @@ def main():
             output_filename = "spell.json"
             
         print(f"Saving to {output_filename}...")
-        save_as_json(spell_data, output_filename)
+        pipeline.exporter.export(spell_data, ExportTarget(location=output_filename))
         print("Done!")
         
     except Exception as e:
