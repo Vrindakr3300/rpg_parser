@@ -1,7 +1,10 @@
+import time
 from collections.abc import Callable
 from typing import Any
 
 from rpg_parser.core.ports import ExportTarget, FetchRequest, PipelineSpec, ScrapePipelineSpec, ScrapeRequest
+
+SCRAPE_REQUEST_DELAY_SECONDS = 1.0
 
 
 def run_pipeline(
@@ -26,6 +29,8 @@ def run_scrape_pipeline(
     records = []
 
     for index, fetch_request in enumerate(spec.scraper.discover(request), start=1):
+        if index > 1:
+            time.sleep(SCRAPE_REQUEST_DELAY_SECONDS)
         raw_document = spec.fetcher.fetch(fetch_request)
         data = spec.parser.parse(raw_document)
         records.append(data)
