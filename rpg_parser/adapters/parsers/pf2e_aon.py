@@ -48,9 +48,11 @@ class PF2eAoNSpellHtmlParser:
         if traits:
             spell_data["Traits"] = list(dict.fromkeys(traits))
 
+        heightened: list[dict[str, str]] = []
         for b_tag in main_content.find_all("b"):
             key = b_tag.get_text(strip=True)
-            if key in ["Source", "Traditions", "Cast", "Range", "Area", "Saving Throw", "Duration", "Targets", "Bloodline", "Deities"] or key.startswith("Heightened"):
+            is_heightened = key.startswith("Heightened")
+            if key in ["Source", "Traditions", "Cast", "Range", "Area", "Saving Throw", "Duration", "Targets", "Bloodline", "Deities"] or is_heightened:
                 value_parts = []
                 sibling = b_tag.next_sibling
                 while sibling:
@@ -66,7 +68,15 @@ class PF2eAoNSpellHtmlParser:
                 if value.startswith(";"):
                     value = value[1:].strip()
 
-                spell_data[key] = value
+                if is_heightened:
+                    label_match = re.match(r"Heightened\s*\((.+?)\)", key)
+                    label = label_match.group(1) if label_match else key.removeprefix("Heightened").strip(" ()")
+                    heightened.append({"label": label, "text": value})
+                else:
+                    spell_data[key] = value
+
+        if heightened:
+            spell_data["heightened"] = heightened
 
         target_hr = None
         for hr in main_content.find_all("hr"):
