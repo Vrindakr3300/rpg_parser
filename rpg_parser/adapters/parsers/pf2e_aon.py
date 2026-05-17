@@ -50,7 +50,7 @@ class PF2eAoNSpellHtmlParser:
 
         for b_tag in main_content.find_all("b"):
             key = b_tag.get_text(strip=True)
-            if key in ["Source", "Traditions", "Cast", "Range", "Area", "Saving Throw", "Duration", "Targets", "Bloodline", "Deities"]:
+            if key in ["Source", "Traditions", "Cast", "Range", "Area", "Saving Throw", "Duration", "Targets", "Bloodline", "Deities"] or key.startswith("Heightened"):
                 value_parts = []
                 sibling = b_tag.next_sibling
                 while sibling:
