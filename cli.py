@@ -33,6 +33,18 @@ def build_scrape_parser() -> argparse.ArgumentParser:
     parser.add_argument("--location", help="Optional source root location for discovery.")
     parser.add_argument("--limit", type=int, help="Maximum records to discover.")
     parser.add_argument("--tradition", help="PF2e spell tradition filter for AoN discovery.")
+    parser.add_argument(
+        "--delay",
+        type=float,
+        default=1.0,
+        help="Seconds to wait between starting detail-page requests. Defaults to 1.0.",
+    )
+    parser.add_argument(
+        "--workers",
+        type=int,
+        default=1,
+        help="Maximum concurrent detail-page requests. Defaults to 1.",
+    )
     parser.add_argument("-o", "--output", default="scraped.json", help="Output JSON file for scraped records.")
     add_pipeline_args(parser)
     return parser
@@ -67,6 +79,8 @@ def run_scrape(args: argparse.Namespace) -> None:
     records = run_scrape_pipeline(
         pipeline,
         ScrapeRequest(location=args.location, filters=filters, limit=args.limit),
+        delay_seconds=args.delay,
+        max_workers=args.workers,
     )
 
     print(f"Saving {len(records)} records to {args.output}...")

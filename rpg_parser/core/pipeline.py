@@ -1,5 +1,6 @@
 import time
 from collections.abc import Callable
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Any
 
 from rpg_parser.core.ports import ExportTarget, FetchRequest, PipelineSpec, ScrapePipelineSpec, ScrapeRequest
@@ -25,19 +26,60 @@ def run_scrape_pipeline(
     spec: ScrapePipelineSpec,
     request: ScrapeRequest,
     target_factory: Callable[[dict[str, Any], int, FetchRequest], ExportTarget | None] | None = None,
+    delay_seconds: float | None = None,
+    max_workers: int = 1,
 ) -> list[dict[str, Any]]:
-    records = []
+    if max_workers < 1:
+        raise ValueError("max_workers must be at least 1")
 
-    for index, fetch_request in enumerate(spec.scraper.discover(request), start=1):
-        if index > 1:
-            time.sleep(SCRAPE_REQUEST_DELAY_SECONDS)
+    delay = SCRAPE_REQUEST_DELAY_SECONDS if delay_seconds is None else delay_seconds
+    if delay < 0:
+        raise ValueError("delay_seconds must be non-negative")
+
+    def fetch_and_parse(fetch_request: FetchRequest) -> dict[str, Any]:
         raw_document = spec.fetcher.fetch(fetch_request)
-        data = spec.parser.parse(raw_document)
+        return spec.parser.parse(raw_document)
+
+    def add_record(
+        records: list[dict[str, Any]],
+        index: int,
+        fetch_request: FetchRequest,
+        data: dict[str, Any],
+    ) -> None:
         records.append(data)
 
         if target_factory is not None:
             target = target_factory(data, index, fetch_request)
             if target is not None:
                 spec.exporter.export(data, target)
+
+    if max_workers == 1:
+        records = []
+        for index, fetch_request in enumerate(spec.scraper.discover(request), start=1):
+            if index > 1 and delay:
+                time.sleep(delay)
+            data = fetch_and_parse(fetch_request)
+            add_record(records, index, fetch_request, data)
+        return records
+
+    indexed_records: list[tuple[int, FetchRequest, dict[str, Any]]] = []
+
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        future_to_request = {}
+        for index, fetch_request in enumerate(spec.scraper.discover(request), start=1):
+            if index > 1 and delay:
+                time.sleep(delay)
+            future = executor.submit(fetch_and_parse, fetch_request)
+            future_to_request[future] = (index, fetch_request)
+
+        for future in as_completed(future_to_request):
+            index, fetch_request = future_to_request[future]
+            indexed_records.append((index, fetch_request, future.result()))
+
+    indexed_records.sort(key=lambda item: item[0])
+    records = []
+
+    for index, fetch_request, data in indexed_records:
+        add_record(records, index, fetch_request, data)
 
     return records

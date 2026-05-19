@@ -40,6 +40,14 @@ Scrape multiple spells discovered through AoN Elasticsearch into a single JSON a
 uv run python cli.py scrape --limit 10 --tradition arcane -o scraped.json
 ```
 
+For larger scrapes, increase concurrency and reduce the delay between detail-page requests:
+
+```bash
+uv run python cli.py scrape --tradition arcane --workers 4 --delay 0.25 -o scraped.json
+```
+
+The scrape defaults are conservative: `--workers 1 --delay 1.0`.
+
 The default pipeline options are `--system pf2e --type spell --source aon-html`.
 
 ## Testing
