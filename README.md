@@ -1,6 +1,6 @@
 # RPG Parser
 
-Command-line utility for fetching Pathfinder 2e spell data from Archives of Nethys and exporting structured JSON.
+Command-line utility for fetching Pathfinder 1e and 2e spell data from Archives of Nethys and exporting structured JSON.
 
 ## Setup
 
@@ -20,6 +20,12 @@ The explicit `fetch` subcommand is equivalent:
 
 ```bash
 uv run python cli.py fetch "https://2e.aonprd.com/Spells.aspx?ID=1528"
+```
+
+Fetch a Pathfinder 1e spell by specifying the `--system`:
+
+```bash
+uv run python cli.py fetch "https://aonprd.com/SpellDisplay.aspx?ItemName=Magic Missile" --system pf1e
 ```
 
 Write a single spell to a specific JSON file:
@@ -47,7 +53,7 @@ uv run python -m unittest discover -s tests
 Run the offline unit tests:
 
 ```bash
-uv run python -m unittest tests.test_pipeline tests.test_registry tests.test_aon_scraper tests.test_scrape_pipeline
+uv run python -m unittest tests.test_pipeline tests.test_registry tests.test_aon_scraper tests.test_scrape_pipeline tests.test_pf1e_parser
 ```
 
 Run the live AoN integration test:

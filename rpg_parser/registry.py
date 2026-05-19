@@ -1,5 +1,6 @@
 from rpg_parser.adapters.exporters.json_file import JsonFileExporter
 from rpg_parser.adapters.fetchers.aon import AoNHtmlFetcher
+from rpg_parser.adapters.parsers.pf1e_aon import PF1eAoNSpellHtmlParser
 from rpg_parser.adapters.parsers.pf2e_aon import PF2eAoNSpellHtmlParser
 from rpg_parser.adapters.scrapers.aon import AoNSpellScraper
 from rpg_parser.core.ports import PipelineSpec, ScrapePipelineSpec
@@ -9,6 +10,11 @@ PIPELINES = {
     ("pf2e", "spell", "aon-html"): PipelineSpec(
         fetcher=AoNHtmlFetcher(),
         parser=PF2eAoNSpellHtmlParser(),
+        exporter=JsonFileExporter(),
+    ),
+    ("pf1e", "spell", "aon-html"): PipelineSpec(
+        fetcher=AoNHtmlFetcher(),
+        parser=PF1eAoNSpellHtmlParser(),
         exporter=JsonFileExporter(),
     ),
 }

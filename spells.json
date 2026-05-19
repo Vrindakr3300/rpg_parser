@@ -1,0 +1,206 @@
+[
+    {
+        "id": "acid-grip",
+        "Name": "Acid Grip",
+        "Actions": "Two Actions",
+        "Level": "2",
+        "Traits": [
+            "Acid",
+            "Concentrate",
+            "Manipulate"
+        ],
+        "Source": "Player Core pg. 314",
+        "Traditions": "arcane , primal",
+        "Deities": "Telvrys , The Devourer",
+        "Range": "120 feet;",
+        "Targets": "1 creature",
+        "heightened": [
+            {
+                "label": "+2",
+                "text": "The initial damage increases by 2d8, and the persistent acid damage increases by 1d6."
+            }
+        ],
+        "Description": "An ephemeral, taloned hand grips the target, burning it with magical acid. The target takes 2d8 acid damage plus 1d6\npersistent acid damage\ndepending on its Reflex save. A creature taking persistent damage from this spell takes a –10-foot status penalty to its Speeds.\nCritical Success\nThe creature is unaffected.\nSuccess\nThe creature takes half damage and no persistent damage, and the claw\nmoves\nit up to 5 feet in a direction of your choice.\nFailure\nThe creature takes full damage and persistent damage, and the claw moves it up to 10 feet in a direction of your choice.\nCritical Failure\nThe creature takes double damage and full persistent damage, and the claw moves it up to 20 feet in a direction of your choice."
+    },
+    {
+        "id": "caustic-blast",
+        "Name": "Caustic Blast",
+        "Actions": "Two Actions",
+        "Level": "1",
+        "Traits": [
+            "Acid",
+            "Cantrip",
+            "Concentrate",
+            "Manipulate"
+        ],
+        "Source": "Player Core pg. 319",
+        "Traditions": "arcane , primal",
+        "Bloodline": "demonic",
+        "Range": "30 feet;",
+        "Area": "5-foot burst",
+        "heightened": [
+            {
+                "label": "+2",
+                "text": "The initial damage increases by 1d8, and the persistent damage on a critical failure increases by 1."
+            }
+        ],
+        "Description": "You fling a large glob of acid that immediately detonates, spraying nearby creatures. Creatures in the area take 1d8 acid damage with a basic Reflex save; on a critical failure, the creature also takes 1\npersistent acid damage\n."
+    },
+    {
+        "id": "aerial-form",
+        "Name": "Aerial Form",
+        "Actions": "Two Actions",
+        "Level": "4",
+        "Traits": [
+            "Concentrate",
+            "Manipulate",
+            "Polymorph"
+        ],
+        "Source": "Player Core pg. 314",
+        "Traditions": "arcane , primal",
+        "Deities": "Andoletta , Horus , Mother Vulture , Nephthys , Pazuzu , Ranginori , Tanagaar , Tjasse , Uvuko , Ylimancha",
+        "Duration": "1 minute",
+        "heightened": [
+            {
+                "label": "5th",
+                "text": "Your battle form is Large and your fly Speed gains a +10-foot status bonus. You instead gain 10 temporary HP, attack modifier +18, damage bonus +8, and Acrobatics +20."
+            },
+            {
+                "label": "6th",
+                "text": "Your battle form is Huge, your fly Speed gains a +15-foot status bonus, and your attacks have 10-foot reach. You instead gain AC = 21 + your level, 15 temporary HP, attack modifier +21, damage bonus +4 and double damage dice (including persistent damage), and Acrobatics +23."
+            }
+        ],
+        "Description": "You harness your mastery of the sky to reshape your body into a Medium flying animal battle form. When you Cast this Spell, choose a listed battle form. You can decide the specific type of animal (such as an owl or eagle for bird), but this has no effect on the form's Size or statistics. While in this form, you gain the\nanimal\ntrait. You can Dismiss the spell.\nYou gain specific abilities based on the animal you choose:\nAC = 18 + your level. Ignore your armor's check penalty and Speed reduction.5 temporary Hit Points.Low-light vision.One or moreunarmedmelee attacks specific to the battle form you choose, which are the only attacks you can Strike with. You're trained with them. Your attack modifier is +16, and your damage bonus is +5. These attacks are Dexterity based (for the purpose of theclumsycondition, for example). If your attack modifier for Dexterity-based unarmed attacks is higher, you can use it instead.Acrobaticsmodifier of +16, unless your own is higher.\nYou also gain specific abilities based on the form you choose:\nBatSpeed 20 feet, fly 30 feet; precise echolocation 40 feet;Melee[one-action]fangs,Damage2d8 piercing;Melee[one-action]wing (agile),Damage2d6 bludgeoning.BirdSpeed 10 feet, fly 50 feet;Melee[one-action]beak,Damage2d8 piercing;Melee[one-action]talon (agile),Damage1d10 slashing.PterosaurSpeed 10 feet, fly 40 feet; imprecise scent 30 feet; Melee[one-action]beak, Damage 3d6 piercing.WaspSpeed 20 feet, fly 40 feet;Melee[one-action]stinger,Damage1d8 piercing plus 1d6 persistent poison."
+    },
+    {
+        "id": "air-bubble",
+        "Name": "Air Bubble",
+        "Actions": "Reaction",
+        "Level": "1",
+        "Traits": [
+            "Air",
+            "Concentrate"
+        ],
+        "Source": "Player Core pg. 314",
+        "Traditions": "arcane , divine , primal",
+        "Range": "60 feet;",
+        "Targets": "the triggering creature",
+        "Duration": "1 minute",
+        "Description": "A bubble of pure air appears around the target's head, allowing it to breathe normally. The effect ends as soon as the target returns to an environment where it can breathe normally."
+    },
+    {
+        "id": "alarm",
+        "Name": "Alarm",
+        "Level": "1",
+        "Traits": [
+            "Concentrate",
+            "Manipulate"
+        ],
+        "Source": "Player Core pg. 314",
+        "Traditions": "arcane , divine , occult , primal",
+        "Cast": "10 minutes",
+        "Range": "touch;",
+        "Area": "20-foot burst",
+        "Duration": "8 hours",
+        "heightened": [
+            {
+                "label": "3rd",
+                "text": "You can specify a trigger for which types of creatures sound the alarm spell, as described in Setting Triggers on page 303."
+            }
+        ],
+        "Description": "You ward an area to alert you when creatures enter without your permission. When you cast alarm, select a password. Whenever a Small or larger corporeal creature enters the spell's area without speaking the password, alarm sends your choice of a mental alert (in which case the spell gains the\nmental\ntrait) or an audible alarm with the sound and volume of a hand bell (in which case the spell gains the\nauditory\ntrait). Either option automatically awakens you, and the bell allows each creature in the area to attempt a DC 15 Perception check to wake up. A creature aware of the alarm must succeed at a\nStealth\ncheck against the spell's DC or trigger the spell when moving into the area."
+    },
+    {
+        "id": "ant-haul",
+        "Name": "Ant Haul",
+        "Actions": "Two Actions",
+        "Level": "1",
+        "Traits": [
+            "Concentrate",
+            "Manipulate"
+        ],
+        "Source": "Player Core pg. 315",
+        "Traditions": "arcane , primal",
+        "Deities": "Aakriti , Balumbdar , Belech , Dolok Darkfur , Droskar , Hearth and Harvest , Jukha , Kurgess , Stone's Blood",
+        "Range": "touch;",
+        "Targets": "1 creature",
+        "Duration": "8 hours",
+        "Description": "You reinforce the target's musculoskeletal system to bear more weight. The target can carry 3 more Bulk than normal before becoming encumbered and up to a maximum of 6 more Bulk."
+    },
+    {
+        "id": "antimagic-field",
+        "Name": "Antimagic Field",
+        "Actions": "Three Actions",
+        "Level": "8",
+        "Traits": [
+            "Rare",
+            "Abjuration"
+        ],
+        "Source": "Core Rulebook pg. 318",
+        "Traditions": "arcane , divine , occult",
+        "Cast": "[three-actions] material , somatic , verbal",
+        "Area": "10-foot emanation, which affects you",
+        "Duration": "sustained up to 1 minute",
+        "Description": "You repel all magic from the target area, preventing spells and other magic from functioning. Spells can't penetrate the area, magic items cease to function within it, and no one inside can cast spells or use magic abilities. Likewise, spells—such as\ndispel magic\n—can't affect the field itself unless they are of a higher level. Magic effects resume the moment they pass outside the field. For example, a ray fired from one side of the field could target a creature on the other side (as long as caster and target are both outside the field). A summoned creature winks out of existence but reappears if the field moves or ends. Invested magic items cease to function, but they remain invested and resume functioning when they exit the field; the ability boost from an apex item isn't suppressed within the field. Spells of a higher level than the\nantimagic field\novercome its effects, and can even be cast by a creature within the field.\nThe field disrupts only magic, so a\n+3 longsword\nstill functions as a longsword. Magically created creatures (such as golems) function normally within an\nantimagic field\n."
+    },
+    {
+        "id": "cursed-metamorphosis",
+        "Name": "Cursed Metamorphosis",
+        "Actions": "Two Actions",
+        "Level": "6",
+        "Traits": [
+            "Concentrate",
+            "Curse",
+            "Incapacitation",
+            "Manipulate",
+            "Polymorph"
+        ],
+        "Source": "Player Core pg. 322",
+        "Traditions": "arcane , occult , primal",
+        "Bloodline": "hag",
+        "Deities": "Mestama , Mother Vulture , The Lantern King , Venkelvore , Yig , Zeaki",
+        "Range": "30 feet;",
+        "Targets": "1 creature",
+        "Duration": "varies",
+        "Description": "You transform the target creature into a harmless animal appropriate to the area, with effects based on its Fortitude save.\nCritical Success\nThe target is unaffected.\nSuccess\nThe target's body gains minor features of the harmless animal. Its insides churn as they partially transform, causing it to be\nsickened 1\n. When it recovers from the sickened condition, its features revert to normal.\nFailure\nThe target transforms for 1 minute but keeps its mind. If it spends all its actions on its turn concentrating on its original form, it can attempt a Will save to end the effect immediately.\nCritical Failure\nThe target is transformed into the chosen harmless animal, body and mind, for an unlimited duration."
+    },
+    {
+        "id": "banishment",
+        "Name": "Banishment",
+        "Actions": "Two Actions",
+        "Level": "5",
+        "Traits": [
+            "Concentrate",
+            "Incapacitation",
+            "Manipulate"
+        ],
+        "Source": "Player Core pg. 317",
+        "Traditions": "arcane , divine , occult , primal",
+        "Range": "30 feet;",
+        "Targets": "1 creature that isn't on its home plane",
+        "heightened": [
+            {
+                "label": "9th",
+                "text": "You can target up to 10 creatures. The extra cost affects targets to which it is anathema."
+            }
+        ],
+        "Description": "You send the target back to its home plane. The target must attempt a Will save. You can spend an extra action while Casting this Spell and add a cost to the spell to give the creature a –2 circumstance penalty to its save. The cost must be a specially gathered object that is anathema to the creature. This spell fails if you aren't on your home plane when you cast it.\nCritical Success\nThe target resists being banished and you are\nstunned 1\n.\nSuccess\nThe target resists being banished.\nFailure\nThe target is banished.\nCritical Failure\nThe target is banished and can't return by any means to the plane it's banished from for 1 week."
+    },
+    {
+        "id": "bind-undead",
+        "Name": "Bind Undead",
+        "Actions": "Two Actions",
+        "Level": "3",
+        "Traits": [
+            "Concentrate",
+            "Manipulate"
+        ],
+        "Source": "Player Core pg. 318",
+        "Traditions": "arcane , divine , occult",
+        "Bloodline": "undead",
+        "Range": "30 feet;",
+        "Targets": "1 mindless undead creature with a level no greater than bind undead ’s spell rank",
+        "Duration": "1 day",
+        "Description": "With a word of power, you seize control of the target. It gains the\nminion\ntrait. If you or an ally uses any\nhostile actions\nagainst the target, the spell ends."
+    }
+]
