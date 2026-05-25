@@ -16,7 +16,7 @@ class AoNSpellScraper:
     def discover(self, request: ScrapeRequest) -> Iterable[FetchRequest]:
         filters = request.filters or {}
         tradition = filters.get("tradition")
-        size = request.limit or 1000
+        size = request.limit or 5000
         base_url = request.location or self.base_url
 
         seen = set()

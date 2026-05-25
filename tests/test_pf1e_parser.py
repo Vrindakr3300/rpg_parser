@@ -8,7 +8,7 @@ from rpg_parser.core.ports import RawDocument
 class TestPF1eAoNSpellHtmlParser(unittest.TestCase):
     def setUp(self):
         self.parser = PF1eAoNSpellHtmlParser()
-        sample_path = Path(__file__).parent.parent / "sample_pf1e_spell.html"
+        sample_path = Path(__file__).parent.parent / "samples" / "sample_pf1e_spell.html"
         with open(sample_path, "r", encoding="utf-8") as f:
             self.sample_html = f.read()
 

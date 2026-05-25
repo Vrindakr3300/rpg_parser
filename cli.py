@@ -31,7 +31,7 @@ def build_fetch_parser() -> argparse.ArgumentParser:
 def build_scrape_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="RPG Parser: Scrape many RPG records to JSON files.")
     parser.add_argument("--location", help="Optional source root location for discovery.")
-    parser.add_argument("--limit", type=int, help="Maximum records to discover.")
+    parser.add_argument("--limit", type=int, default=5000, help="Maximum records to discover. Defaults to 5000.")
     parser.add_argument("--tradition", help="PF2e spell tradition filter for AoN discovery.")
     parser.add_argument(
         "--delay",

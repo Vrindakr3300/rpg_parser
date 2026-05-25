@@ -69,7 +69,7 @@ class AoNElasticsearchClient:
         response.raise_for_status()
         return response.json()
 
-    def fetch_spells_bulk(self, tradition: str | None = "primal", size: int = 1000) -> list[dict[str, Any]]:
+    def fetch_spells_bulk(self, tradition: str | None = "primal", size: int = 5000) -> list[dict[str, Any]]:
         filters = [{"term": {"type": {"value": "spell"}}}]
         if tradition:
             filters.insert(0, {"term": {"tradition": {"value": tradition.lower()}}})
