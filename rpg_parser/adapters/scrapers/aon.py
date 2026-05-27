@@ -22,15 +22,21 @@ class AoNSpellScraper:
         base_url = request.location or self.base_url
 
         seen = set()
+        seen_names = set()
         yielded_count = 0
         for record in self.client.fetch_spells_bulk(tradition=tradition, size=query_size):
             if record.get("remaster_id"):
                 continue
+            if record.get("exclude_from_search"):
+                continue
             url = self._spell_url(record, base_url)
             key = self._dedupe_key(record, url) if url else None
-            if not url or key in seen:
+            name_key = record.get("name", "").lower().strip()
+            if not url or key in seen or (name_key and name_key in seen_names):
                 continue
             seen.add(key)
+            if name_key:
+                seen_names.add(name_key)
             yield FetchRequest(location=url, params={"record": record})
             yielded_count += 1
             if limit is not None and yielded_count >= limit:
