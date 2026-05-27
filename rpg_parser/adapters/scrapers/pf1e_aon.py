@@ -35,14 +35,24 @@ class PF1eAoNSpellScraper:
                 continue
                 
             full_url = urllib.parse.urljoin(self.base_url, href)
+            key = self._dedupe_key(full_url)
             
-            if full_url in seen:
+            if key in seen:
                 continue
                 
-            seen.add(full_url)
+            seen.add(key)
             
             yield FetchRequest(location=full_url)
             count += 1
             
             if limit is not None and count >= limit:
                 break
+
+    def _dedupe_key(self, url: str) -> tuple[str, str]:
+        query = urllib.parse.parse_qs(urllib.parse.urlparse(url).query)
+        for key, values in query.items():
+            if key.lower() == "itemname" and values and values[0]:
+                item_name = " ".join(values[0].split()).lower()
+                return ("itemname", item_name)
+
+        return ("url", url)

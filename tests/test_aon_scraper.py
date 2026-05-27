@@ -11,7 +11,9 @@ class FakeAoNClient:
         return [
             {"name": "Fireball", "url": "Spells.aspx?ID=1530"},
             {"name": "Duplicate Fireball", "url": "Spells.aspx?ID=1530"},
+            {"name": "Fireball Variant", "url": "Spells.aspx?ID=1530&NoRedirect=1"},
             {"name": "Fallback ID", "id": 123},
+            {"name": "Duplicate Fallback ID", "ID": 123, "url": "Spells.aspx?ID=999"},
         ]
 
 

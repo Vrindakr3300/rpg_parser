@@ -63,6 +63,8 @@ class TestPF1eAoNSpellScraper(unittest.TestCase):
             <body>
                 <a href="SpellDisplay.aspx?ItemName=Fireball">Fireball</a>
                 <a href="SpellDisplay.aspx?ItemName=Fireball">Fireball again</a>
+                <a href="SpellDisplay.aspx?ItemName=Magic%20Missile">Magic Missile</a>
+                <a href="SpellDisplay.aspx?ItemName=Magic+Missile&Source=Core">Magic Missile again</a>
             </body>
         </html>
         """
@@ -73,7 +75,7 @@ class TestPF1eAoNSpellScraper(unittest.TestCase):
         
         results = list(scraper.discover(request))
         
-        self.assertEqual(len(results), 1)
+        self.assertEqual(len(results), 2)
 
 if __name__ == "__main__":
     unittest.main()
