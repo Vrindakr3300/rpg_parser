@@ -16,17 +16,25 @@ class AoNSpellScraper:
     def discover(self, request: ScrapeRequest) -> Iterable[FetchRequest]:
         filters = request.filters or {}
         tradition = filters.get("tradition")
-        size = request.limit or 5000
+        limit = request.limit
+        # Query a larger size from Elasticsearch to ensure we have enough records after filtering legacy spells
+        query_size = max(5000, limit * 3) if limit else 5000
         base_url = request.location or self.base_url
 
         seen = set()
-        for record in self.client.fetch_spells_bulk(tradition=tradition, size=size):
+        yielded_count = 0
+        for record in self.client.fetch_spells_bulk(tradition=tradition, size=query_size):
+            if record.get("remaster_id"):
+                continue
             url = self._spell_url(record, base_url)
             key = self._dedupe_key(record, url) if url else None
             if not url or key in seen:
                 continue
             seen.add(key)
             yield FetchRequest(location=url, params={"record": record})
+            yielded_count += 1
+            if limit is not None and yielded_count >= limit:
+                break
 
     def _spell_url(self, record: dict, base_url: str) -> str | None:
         for key in ["url", "href", "link"]:
@@ -36,6 +44,9 @@ class AoNSpellScraper:
 
         aon_id = record.get("id") or record.get("ID")
         if aon_id:
+            # Strip "spell-" or other prefixes from the ID for a valid URL
+            if isinstance(aon_id, str) and "-" in aon_id:
+                aon_id = aon_id.split("-")[-1]
             return urljoin(base_url, f"Spells.aspx?ID={aon_id}")
 
         return None
@@ -44,7 +55,10 @@ class AoNSpellScraper:
         for key in ["id", "ID"]:
             value = record.get(key)
             if value:
-                return ("id", str(value).strip())
+                val_str = str(value).strip()
+                if "-" in val_str:
+                    val_str = val_str.split("-")[-1]
+                return ("id", val_str)
 
         query = parse_qs(urlparse(url).query)
         for key, values in query.items():
