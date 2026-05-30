@@ -1,5 +1,6 @@
 import unittest
 
+from rpg_parser.adapters.fetchers.aon import AoNElasticsearchClient
 from rpg_parser.adapters.scrapers.aon import AoNSpellScraper
 from rpg_parser.core.ports import ScrapeRequest
 
@@ -45,6 +46,33 @@ class TestAoNSpellScraper(unittest.TestCase):
         self.assertEqual(requests[0].location, "https://2e.aonprd.com/Spells.aspx?ID=1530")
         self.assertEqual(requests[1].location, "https://2e.aonprd.com/Spells.aspx?ID=123")
         self.assertEqual(requests[2].location, "https://2e.aonprd.com/Spells.aspx?ID=456")
+
+    def test_discover_clamps_query_size_to_window(self):
+        # The default --limit=5000 makes max(5000, limit*3) == 15000, which exceeds
+        # AoN's index.max_result_window (10000) and was rejected with a 400.
+        client = FakeAoNClient()
+        scraper = AoNSpellScraper(client=client)
+
+        list(scraper.discover(ScrapeRequest(limit=5000)))
+
+        self.assertEqual(client.size, AoNElasticsearchClient.MAX_RESULT_WINDOW)
+
+
+class TestAoNElasticsearchClient(unittest.TestCase):
+    def test_fetch_spells_bulk_clamps_size_to_window(self):
+        client = AoNElasticsearchClient()
+        captured = {}
+
+        def fake_post(payload):
+            captured["payload"] = payload
+            return {"hits": {"hits": []}}
+
+        client._post = fake_post
+        client.fetch_spells_bulk(size=15000)
+
+        self.assertEqual(
+            captured["payload"]["size"], AoNElasticsearchClient.MAX_RESULT_WINDOW
+        )
 
 
 if __name__ == "__main__":

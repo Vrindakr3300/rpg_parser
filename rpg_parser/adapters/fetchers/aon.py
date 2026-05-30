@@ -51,6 +51,9 @@ class AoNElasticsearchClient:
     """Client for the Archives of Nethys Elasticsearch endpoint."""
 
     url = "https://elasticsearch.aonprd.com/aon/_search?stats=search"
+    # AoN's index enforces index.max_result_window=10000; a larger `size`
+    # (with no `from`) is rejected with a 400 "Result window is too large".
+    MAX_RESULT_WINDOW = 10000
 
     def __init__(self, timeout: float = 30.0):
         self.timeout = timeout
@@ -70,6 +73,7 @@ class AoNElasticsearchClient:
         return response.json()
 
     def fetch_spells_bulk(self, tradition: str | None = "primal", size: int = 5000) -> list[dict[str, Any]]:
+        size = min(size, self.MAX_RESULT_WINDOW)
         filters = [{"term": {"type": {"value": "spell"}}}]
         if tradition:
             filters.insert(0, {"term": {"tradition": {"value": tradition.lower()}}})

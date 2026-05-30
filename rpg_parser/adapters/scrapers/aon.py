@@ -17,8 +17,12 @@ class AoNSpellScraper:
         filters = request.filters or {}
         tradition = filters.get("tradition")
         limit = request.limit
-        # Query a larger size from Elasticsearch to ensure we have enough records after filtering legacy spells
-        query_size = max(5000, limit * 3) if limit else 5000
+        # Query a larger size from Elasticsearch to ensure we have enough records after filtering legacy spells,
+        # but never above the index's max result window or the request is rejected with a 400.
+        query_size = min(
+            max(5000, limit * 3) if limit else 5000,
+            AoNElasticsearchClient.MAX_RESULT_WINDOW,
+        )
         base_url = request.location or self.base_url
 
         seen = set()
