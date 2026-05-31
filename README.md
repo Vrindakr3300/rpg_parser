@@ -1,6 +1,11 @@
 # RPG Parser
 
+[![CI](https://github.com/BurcinSayin/rpg_parser/actions/workflows/ci.yml/badge.svg)](https://github.com/BurcinSayin/rpg_parser/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 Command-line utility for fetching Pathfinder 1e and Pathfinder 2e spell data from Archives of Nethys and exporting structured JSON.
+
+> **Unofficial fan tool.** This project is not affiliated with, endorsed by, or sponsored by Paizo Inc. or Archives of Nethys. See [License and Legal](#license-and-legal) before scraping or redistributing data.
 
 ## What It Does
 
@@ -192,11 +197,17 @@ When changing parser behavior, validate against the sample HTML fixtures and add
 
 ## License and Legal
 
+**Disclaimer:** This is an unofficial, fan-made utility. It is **not affiliated with, endorsed by, or sponsored by Paizo Inc. or Archives of Nethys.** "Pathfinder", "Archives of Nethys", and related logos and marks are the property of their respective owners.
+
 **Code License:** The code for this utility is released under the [MIT License](LICENSE).
 
-**Data License:** The data downloaded and parsed by this tool originates from [Archives of Nethys](https://aonprd.com/). The licensing for this data depends on the system being parsed:
+**Data source and attribution:** The data this tool downloads and parses originates from [Archives of Nethys](https://aonprd.com/), which publishes Pathfinder content owned by Paizo Inc. The small sample files in `samples/` are included only as parser test fixtures. See [`ATTRIBUTION.md`](ATTRIBUTION.md) for the required notices.
+
+**Data License:** The licensing for the game data depends on the system being parsed:
 
 - Pathfinder 1e data is governed by the [Open Game License (OGL)](https://opengamingfoundation.org/ogl.html).
 - Pathfinder 2e data is governed by the [Open RPG Creative (ORC) License](https://paizo.com/orclicense).
 
-When using, distributing, or publishing data scraped with this tool, you must comply with the respective license and any other applicable policies specified by Paizo Inc. and Archives of Nethys.
+When using, distributing, or publishing data scraped with this tool, **you** are responsible for complying with the respective license (including OGL §15 / ORC attribution obligations, which carry over to any redistributed output) and any other applicable policies specified by Paizo Inc. and Archives of Nethys.
+
+**Responsible use:** Please scrape politely. Archives of Nethys is a community resource — use a conservative `--delay`, keep `--workers` low, and don't run large scrapes more often than you need to. The tool identifies itself with a descriptive `User-Agent`; do not modify it to impersonate a browser.

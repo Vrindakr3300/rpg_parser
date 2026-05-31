@@ -6,6 +6,7 @@ from rpg_parser.core.pipeline import run_pipeline, run_scrape_pipeline
 from rpg_parser.core.ports import ExportTarget, FetchRequest, ScrapeRequest
 from rpg_parser.registry import get_pipeline, get_scrape_pipeline
 
+
 def create_valid_filename(spell_name: str) -> str:
     """Generates a valid filename from the spell name."""
     name = re.sub(r'[^\w\-_\. ]', '_', spell_name)
@@ -55,7 +56,7 @@ def run_fetch(args: argparse.Namespace) -> None:
     pipeline = get_pipeline(args.system, args.content_type, args.source)
     print("Extracting data...")
     spell_data = run_pipeline(pipeline, FetchRequest(location=args.url))
-        
+
     if args.output:
         output_filename = args.output
     elif 'Name' in spell_data:

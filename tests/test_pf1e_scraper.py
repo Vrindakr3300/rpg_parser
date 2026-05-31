@@ -22,13 +22,13 @@ class TestPF1eAoNSpellScraper(unittest.TestCase):
 
         scraper = PF1eAoNSpellScraper()
         request = ScrapeRequest()
-        
+
         results = list(scraper.discover(request))
-        
+
         self.assertEqual(len(results), 2)
         self.assertEqual(results[0].location, "https://aonprd.com/SpellDisplay.aspx?ItemName=Fireball")
         self.assertEqual(results[1].location, "https://aonprd.com/SpellDisplay.aspx?ItemName=Magic%20Missile")
-        
+
         mock_get.assert_called_once_with(
             "https://aonprd.com/Spells.aspx?Class=All",
             headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
@@ -50,9 +50,9 @@ class TestPF1eAoNSpellScraper(unittest.TestCase):
 
         scraper = PF1eAoNSpellScraper()
         request = ScrapeRequest(limit=2)
-        
+
         results = list(scraper.discover(request))
-        
+
         self.assertEqual(len(results), 2)
 
     @patch("rpg_parser.adapters.scrapers.pf1e_aon.requests.get")
@@ -72,9 +72,9 @@ class TestPF1eAoNSpellScraper(unittest.TestCase):
 
         scraper = PF1eAoNSpellScraper()
         request = ScrapeRequest()
-        
+
         results = list(scraper.discover(request))
-        
+
         self.assertEqual(len(results), 2)
 
 if __name__ == "__main__":

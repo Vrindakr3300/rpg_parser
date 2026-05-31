@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.14"
+
+      - name: Sync dependencies
+        run: uv sync --dev
+
+      - name: Lint (ruff)
+        run: uv run ruff check .
+
+      - name: Run offline tests
+        # The live AoN integration test is skipped unless
+        # RPG_PARSER_RUN_INTEGRATION is set, so CI stays network-independent.
+        run: uv run python -m unittest discover -s tests

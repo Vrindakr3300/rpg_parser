@@ -6,11 +6,9 @@ from urllib3.util.retry import Retry
 
 from rpg_parser.core.ports import FetchRequest, RawDocument
 
-
-AON_USER_AGENT = (
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-    "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
-)
+# Identify the client honestly rather than spoofing a browser, so Archives of
+# Nethys can recognize (and if needed, contact) this tool's traffic.
+AON_USER_AGENT = "rpg-parser/0.1 (+https://github.com/BurcinSayin/rpg_parser)"
 
 
 class AoNHtmlFetcher:
@@ -61,7 +59,7 @@ class AoNElasticsearchClient:
     def _post(self, payload: dict[str, Any]) -> dict[str, Any]:
         headers = {
             "Content-Type": "application/json",
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+            "User-Agent": AON_USER_AGENT,
         }
         response = requests.post(
             self.url,

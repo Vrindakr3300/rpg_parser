@@ -6,7 +6,6 @@ from rpg_parser.adapters.scrapers.aon import AoNSpellScraper
 from rpg_parser.adapters.scrapers.pf1e_aon import PF1eAoNSpellScraper
 from rpg_parser.core.ports import PipelineSpec, ScrapePipelineSpec
 
-
 PIPELINES = {
     ("pf2e", "spell", "aon-html"): PipelineSpec(
         fetcher=AoNHtmlFetcher(),

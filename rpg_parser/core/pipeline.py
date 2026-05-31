@@ -3,7 +3,13 @@ from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Any
 
-from rpg_parser.core.ports import ExportTarget, FetchRequest, PipelineSpec, ScrapePipelineSpec, ScrapeRequest
+from rpg_parser.core.ports import (
+    ExportTarget,
+    FetchRequest,
+    PipelineSpec,
+    ScrapePipelineSpec,
+    ScrapeRequest,
+)
 
 SCRAPE_REQUEST_DELAY_SECONDS = 1.0
 

@@ -25,26 +25,26 @@ class PF1eAoNSpellScraper:
         response.raise_for_status()
 
         soup = bs4.BeautifulSoup(response.text, "html.parser")
-        
+
         seen = set()
         count = 0
-        
+
         for a_tag in soup.find_all("a"):
             href = a_tag.get("href")
             if not href or "SpellDisplay.aspx" not in href:
                 continue
-                
+
             full_url = urllib.parse.urljoin(self.base_url, href)
             key = self._dedupe_key(full_url)
-            
+
             if key in seen:
                 continue
-                
+
             seen.add(key)
-            
+
             yield FetchRequest(location=full_url)
             count += 1
-            
+
             if limit is not None and count >= limit:
                 break
 

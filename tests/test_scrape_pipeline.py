@@ -3,7 +3,13 @@ import unittest
 from unittest.mock import patch
 
 from rpg_parser.core.pipeline import run_scrape_pipeline
-from rpg_parser.core.ports import ExportTarget, FetchRequest, RawDocument, ScrapePipelineSpec, ScrapeRequest
+from rpg_parser.core.ports import (
+    ExportTarget,
+    FetchRequest,
+    RawDocument,
+    ScrapePipelineSpec,
+    ScrapeRequest,
+)
 
 
 class FakeScraper:
