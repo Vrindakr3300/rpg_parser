@@ -15,6 +15,12 @@ class TestPF1eAoNSpellHtmlParser(unittest.TestCase):
         # Shield Companion (AA) (_1), Sympathetic Wounds (_2).
         with open(samples_dir / "sample_pf1e_bundled_spell.html", "r", encoding="utf-8") as f:
             self.bundled_html = f.read()
+        # A real AoN page whose malformed table markup makes html.parser eject all
+        # but the first bundled <h1 class="title"> out of MainContent_DataListTypes.
+        # Bundles four spells: Curse Terrain, Lesser / Curse Terrain /
+        # Curse Terrain, Greater / Curse Terrain, Supreme.
+        with open(samples_dir / "sample_pf1e_curse_terrain.html", "r", encoding="utf-8") as f:
+            self.curse_terrain_html = f.read()
 
     def test_parse_fireball(self):
         doc = RawDocument(content=self.sample_html, source="test")
@@ -79,3 +85,29 @@ class TestPF1eAoNSpellHtmlParser(unittest.TestCase):
         result = self.parser.parse(doc)
 
         self.assertEqual(result["id"], "shield-other")
+
+    def test_bundled_page_with_sibling_headings_outside_container(self):
+        # Regression: on the real Curse Terrain page, html.parser ejects every bundled
+        # heading except the first out of MainContent_DataListTypes. Searching only that
+        # container saw a single heading, so all four ItemName links fell back to the
+        # first spell, producing four identical "Curse Terrain, Lesser" records (and
+        # silently dropping the other three). Each link must resolve to its own spell.
+        cases = {
+            "Curse Terrain, Lesser": ("curse-terrain-lesser", "Curse Terrain, Lesser"),
+            "Curse Terrain": ("curse-terrain", "Curse Terrain"),
+            "Curse Terrain, Greater": ("curse-terrain-greater", "Curse Terrain, Greater"),
+            "Curse Terrain, Supreme": ("curse-terrain-supreme", "Curse Terrain, Supreme"),
+        }
+        ids = []
+        for item_name, (expected_id, expected_name) in cases.items():
+            doc = RawDocument(
+                content=self.curse_terrain_html,
+                source=f"https://aonprd.com/SpellDisplay.aspx?ItemName={item_name}",
+            )
+            result = self.parser.parse(doc)
+            self.assertEqual(result["id"], expected_id, item_name)
+            self.assertEqual(result["Name"], expected_name, item_name)
+            ids.append(result["id"])
+
+        # All four links must yield distinct records, not duplicates of the first.
+        self.assertEqual(len(set(ids)), 4)

@@ -40,12 +40,20 @@ class PF1eAoNSpellHtmlParser:
         # A single SpellDisplay.aspx page can bundle several spells as consecutive
         # <h1 class="title"> headings. Pick the one matching the requested ItemName
         # so each link yields its own spell, rather than always taking the first.
+        #
+        # Search the whole document, not just the MainContent_DataListTypes table:
+        # AoN's bundled-spell markup is malformed, and html.parser ejects the trailing
+        # sibling headings out of that table (only the first stays inside). Scoping the
+        # search to the container would hide every spell but the first, so each bundled
+        # link would fall back to the first heading and emit duplicates (e.g. four
+        # identical "Curse Terrain, Lesser" records). The site header <h1> has no
+        # class="title", so a whole-document search still matches only spell headings.
         container = (
             soup.find(id="MainContent_DataListTypes")
             or soup.find(id="ctl00_MainContent_DataListTypes")
             or soup
         )
-        title_h1s = container.find_all("h1", class_="title")
+        title_h1s = soup.find_all("h1", class_="title")
 
         title_h1 = None
         requested = _requested_item_name(document.source)
