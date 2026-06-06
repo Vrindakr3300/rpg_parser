@@ -8,9 +8,13 @@ from rpg_parser.core.ports import RawDocument
 class TestPF1eAoNSpellHtmlParser(unittest.TestCase):
     def setUp(self):
         self.parser = PF1eAoNSpellHtmlParser()
-        sample_path = Path(__file__).parent.parent / "samples" / "sample_pf1e_spell.html"
-        with open(sample_path, "r", encoding="utf-8") as f:
+        samples_dir = Path(__file__).parent.parent / "samples"
+        with open(samples_dir / "sample_pf1e_spell.html", "r", encoding="utf-8") as f:
             self.sample_html = f.read()
+        # A page that bundles three spells: Shield Other (_0),
+        # Shield Companion (AA) (_1), Sympathetic Wounds (_2).
+        with open(samples_dir / "sample_pf1e_bundled_spell.html", "r", encoding="utf-8") as f:
+            self.bundled_html = f.read()
 
     def test_parse_fireball(self):
         doc = RawDocument(content=self.sample_html, source="test")
@@ -34,3 +38,44 @@ class TestPF1eAoNSpellHtmlParser(unittest.TestCase):
         self.assertIn("The\nfireball\nsets fire to combustibles", result["Description"])
         self.assertNotIn("Mythic Fireball", result["Description"])
         self.assertNotIn("Controlled Fireball", result.get("Description", ""))
+
+    def test_bundled_page_selects_non_first_sibling(self):
+        # A bundled page is fetched once per linked spell; the parser must pick
+        # the spell matching the requested ItemName, not always the first one.
+        doc = RawDocument(
+            content=self.bundled_html,
+            source="https://aonprd.com/SpellDisplay.aspx?ItemName=Shield Companion (AA)",
+        )
+        result = self.parser.parse(doc)
+
+        self.assertEqual(result["id"], "shield-companion-aa")
+        self.assertEqual(result["Name"], "Shield Companion (AA)")
+
+    def test_bundled_page_selects_first_spell(self):
+        doc = RawDocument(
+            content=self.bundled_html,
+            source="https://aonprd.com/SpellDisplay.aspx?ItemName=Shield Other",
+        )
+        result = self.parser.parse(doc)
+
+        self.assertEqual(result["id"], "shield-other")
+        self.assertEqual(result["Name"], "Shield Other")
+
+    def test_bundled_page_selects_last_sibling(self):
+        doc = RawDocument(
+            content=self.bundled_html,
+            source="https://aonprd.com/SpellDisplay.aspx?ItemName=Sympathetic Wounds",
+        )
+        result = self.parser.parse(doc)
+
+        self.assertEqual(result["id"], "sympathetic-wounds")
+        self.assertEqual(result["Name"], "Sympathetic Wounds")
+
+    def test_bundled_page_unknown_item_name_falls_back_to_first(self):
+        doc = RawDocument(
+            content=self.bundled_html,
+            source="https://aonprd.com/SpellDisplay.aspx?ItemName=Nonexistent Spell",
+        )
+        result = self.parser.parse(doc)
+
+        self.assertEqual(result["id"], "shield-other")
