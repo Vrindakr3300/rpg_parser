@@ -1,0 +1,381 @@
+{
+    "count": 339,
+    "next": null,
+    "previous": null,
+    "results": [
+        {
+            "key": "srd-2024_acid-arrow",
+            "document": {
+                "name": "System Reference Document 5.2",
+                "key": "srd-2024",
+                "type": "SOURCE",
+                "display_name": "5e 2024 Rules",
+                "publisher": {
+                    "name": "Wizards of the Coast",
+                    "key": "wizards-of-the-coast"
+                },
+                "gamesystem": {
+                    "name": "5th Edition 2024",
+                    "key": "5e-2024"
+                },
+                "permalink": "https://dnd.wizards.com/resources/systems-reference-document"
+            },
+            "casting_options": [
+                {
+                    "type": "slot_level_3",
+                    "damage_roll": "5d4",
+                    "target_count": null,
+                    "duration": null,
+                    "range": null,
+                    "concentration": null,
+                    "shape_size": null,
+                    "desc": null
+                },
+                {
+                    "type": "slot_level_4",
+                    "damage_roll": "6d4",
+                    "target_count": null,
+                    "duration": null,
+                    "range": null,
+                    "concentration": null,
+                    "shape_size": null,
+                    "desc": null
+                },
+                {
+                    "type": "slot_level_5",
+                    "damage_roll": "7d4",
+                    "target_count": null,
+                    "duration": null,
+                    "range": null,
+                    "concentration": null,
+                    "shape_size": null,
+                    "desc": null
+                },
+                {
+                    "type": "slot_level_6",
+                    "damage_roll": "8d4",
+                    "target_count": null,
+                    "duration": null,
+                    "range": null,
+                    "concentration": null,
+                    "shape_size": null,
+                    "desc": null
+                },
+                {
+                    "type": "slot_level_7",
+                    "damage_roll": "9d4",
+                    "target_count": null,
+                    "duration": null,
+                    "range": null,
+                    "concentration": null,
+                    "shape_size": null,
+                    "desc": null
+                },
+                {
+                    "type": "slot_level_8",
+                    "damage_roll": "10d4",
+                    "target_count": null,
+                    "duration": null,
+                    "range": null,
+                    "concentration": null,
+                    "shape_size": null,
+                    "desc": null
+                },
+                {
+                    "type": "slot_level_9",
+                    "damage_roll": "11d4",
+                    "target_count": null,
+                    "duration": null,
+                    "range": null,
+                    "concentration": null,
+                    "shape_size": null,
+                    "desc": null
+                }
+            ],
+            "school": {
+                "name": "Evocation",
+                "key": "evocation"
+            },
+            "classes": [
+                {
+                    "name": "Wizard",
+                    "key": "srd-2024_wizard"
+                }
+            ],
+            "range_unit": "feet",
+            "shape_size_unit": "feet",
+            "name": "Acid Arrow",
+            "desc": "A shimmering green arrow streaks toward a target within range and bursts in a spray of acid. Make a ranged spell attack against the target. On a hit, the target takes 4d4 Acid damage and 2d4 Acid damage at the end of its next turn. On a miss, the arrow splashes the target with acid for half as much of the initial damage only.",
+            "level": 2,
+            "higher_level": "The damage (both initial and later) increases by 1d4 for each spell slot level above 2.",
+            "target_type": "creature",
+            "range_text": "90 feet",
+            "range": 90,
+            "ritual": false,
+            "casting_time": "action",
+            "reaction_condition": null,
+            "verbal": true,
+            "somatic": true,
+            "material": true,
+            "material_specified": "powdered rhubarb leaf",
+            "material_cost": null,
+            "material_consumed": false,
+            "target_count": 1,
+            "saving_throw_ability": "",
+            "attack_roll": true,
+            "damage_roll": "4d4",
+            "damage_types": [
+                "acid"
+            ],
+            "duration": "instantaneous",
+            "shape_type": null,
+            "shape_size": null,
+            "concentration": false,
+            "crossreferences": {
+                "to": []
+            }
+        },
+        {
+            "key": "srd-2024_acid-splash",
+            "document": {
+                "name": "System Reference Document 5.2",
+                "key": "srd-2024",
+                "type": "SOURCE",
+                "display_name": "5e 2024 Rules",
+                "publisher": {
+                    "name": "Wizards of the Coast",
+                    "key": "wizards-of-the-coast"
+                },
+                "gamesystem": {
+                    "name": "5th Edition 2024",
+                    "key": "5e-2024"
+                },
+                "permalink": "https://dnd.wizards.com/resources/systems-reference-document"
+            },
+            "casting_options": [
+                {
+                    "type": "player_level_5",
+                    "damage_roll": "2d6",
+                    "target_count": null,
+                    "duration": null,
+                    "range": null,
+                    "concentration": null,
+                    "shape_size": null,
+                    "desc": null
+                },
+                {
+                    "type": "player_level_11",
+                    "damage_roll": "3d6",
+                    "target_count": null,
+                    "duration": null,
+                    "range": null,
+                    "concentration": null,
+                    "shape_size": null,
+                    "desc": null
+                },
+                {
+                    "type": "player_level_17",
+                    "damage_roll": "4d6",
+                    "target_count": null,
+                    "duration": null,
+                    "range": null,
+                    "concentration": null,
+                    "shape_size": null,
+                    "desc": null
+                }
+            ],
+            "school": {
+                "name": "Evocation",
+                "key": "evocation"
+            },
+            "classes": [
+                {
+                    "name": "Sorcerer",
+                    "key": "srd-2024_sorcerer"
+                },
+                {
+                    "name": "Wizard",
+                    "key": "srd-2024_wizard"
+                }
+            ],
+            "range_unit": "feet",
+            "shape_size_unit": "feet",
+            "name": "Acid Splash",
+            "desc": "You create an acidic bubble at a point within range, where it explodes in a 5-foot-radius Sphere. Each creature in that Sphere must succeed on a Dexterity saving throw or take 1d6 Acid damage.",
+            "level": 0,
+            "higher_level": "The damage increases by 1d6 when you reach levels 5 (2d6), 11 (3d6), and 17 (4d6).",
+            "target_type": "creature",
+            "range_text": "60 feet",
+            "range": 60,
+            "ritual": false,
+            "casting_time": "action",
+            "reaction_condition": null,
+            "verbal": true,
+            "somatic": true,
+            "material": false,
+            "material_specified": "",
+            "material_cost": null,
+            "material_consumed": false,
+            "target_count": 1,
+            "saving_throw_ability": "dexterity",
+            "attack_roll": false,
+            "damage_roll": "1d6",
+            "damage_types": [
+                "acid"
+            ],
+            "duration": "instantaneous",
+            "shape_type": "sphere",
+            "shape_size": 5,
+            "concentration": false,
+            "crossreferences": {
+                "to": []
+            }
+        },
+        {
+            "key": "srd-2024_aid",
+            "document": {
+                "name": "System Reference Document 5.2",
+                "key": "srd-2024",
+                "type": "SOURCE",
+                "display_name": "5e 2024 Rules",
+                "publisher": {
+                    "name": "Wizards of the Coast",
+                    "key": "wizards-of-the-coast"
+                },
+                "gamesystem": {
+                    "name": "5th Edition 2024",
+                    "key": "5e-2024"
+                },
+                "permalink": "https://dnd.wizards.com/resources/systems-reference-document"
+            },
+            "casting_options": [
+                {
+                    "type": "slot_level_3",
+                    "damage_roll": null,
+                    "target_count": null,
+                    "duration": null,
+                    "range": null,
+                    "concentration": null,
+                    "shape_size": null,
+                    "desc": "Each target's Hit Points increase by 5."
+                },
+                {
+                    "type": "slot_level_4",
+                    "damage_roll": null,
+                    "target_count": null,
+                    "duration": null,
+                    "range": null,
+                    "concentration": null,
+                    "shape_size": null,
+                    "desc": "Each target's Hit Points increase by 10."
+                },
+                {
+                    "type": "slot_level_5",
+                    "damage_roll": null,
+                    "target_count": null,
+                    "duration": null,
+                    "range": null,
+                    "concentration": null,
+                    "shape_size": null,
+                    "desc": "Each target's Hit Points increase by 15."
+                },
+                {
+                    "type": "slot_level_6",
+                    "damage_roll": null,
+                    "target_count": null,
+                    "duration": null,
+                    "range": null,
+                    "concentration": null,
+                    "shape_size": null,
+                    "desc": "Each target's Hit Points increase by 20."
+                },
+                {
+                    "type": "slot_level_7",
+                    "damage_roll": null,
+                    "target_count": null,
+                    "duration": null,
+                    "range": null,
+                    "concentration": null,
+                    "shape_size": null,
+                    "desc": "Each target's Hit Points increase by 25."
+                },
+                {
+                    "type": "slot_level_8",
+                    "damage_roll": null,
+                    "target_count": null,
+                    "duration": null,
+                    "range": null,
+                    "concentration": null,
+                    "shape_size": null,
+                    "desc": "Each target's Hit Points increase by 30."
+                },
+                {
+                    "type": "slot_level_9",
+                    "damage_roll": null,
+                    "target_count": null,
+                    "duration": null,
+                    "range": null,
+                    "concentration": null,
+                    "shape_size": null,
+                    "desc": "Each target's Hit Points increase by 35."
+                }
+            ],
+            "school": {
+                "name": "Abjuration",
+                "key": "abjuration"
+            },
+            "classes": [
+                {
+                    "name": "Bard",
+                    "key": "srd-2024_bard"
+                },
+                {
+                    "name": "Cleric",
+                    "key": "srd-2024_cleric"
+                },
+                {
+                    "name": "Druid",
+                    "key": "srd-2024_druid"
+                },
+                {
+                    "name": "Paladin",
+                    "key": "srd-2024_paladin"
+                },
+                {
+                    "name": "Ranger",
+                    "key": "srd-2024_ranger"
+                }
+            ],
+            "range_unit": "feet",
+            "shape_size_unit": "feet",
+            "name": "Aid",
+            "desc": "Choose up to three creatures within range. Each target's Hit Point maximum and current Hit Points increase by 5 for the duration.",
+            "level": 2,
+            "higher_level": "Each target's Hit Points increase by 5 for each spell slot level above 2.",
+            "target_type": "creature",
+            "range_text": "30 feet",
+            "range": 30,
+            "ritual": false,
+            "casting_time": "action",
+            "reaction_condition": null,
+            "verbal": true,
+            "somatic": true,
+            "material": true,
+            "material_specified": "a strip of white cloth",
+            "material_cost": null,
+            "material_consumed": false,
+            "target_count": 1,
+            "saving_throw_ability": "",
+            "attack_roll": false,
+            "damage_roll": "",
+            "damage_types": [],
+            "duration": "8 hours",
+            "shape_type": null,
+            "shape_size": null,
+            "concentration": false,
+            "crossreferences": {
+                "to": []
+            }
+        }
+    ]
+}

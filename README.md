@@ -3,15 +3,15 @@
 [![CI](https://github.com/BurcinSayin/rpg_parser/actions/workflows/ci.yml/badge.svg)](https://github.com/BurcinSayin/rpg_parser/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-Command-line utility for fetching Pathfinder 1e and Pathfinder 2e spell data from Archives of Nethys and exporting structured JSON.
+Command-line utility for fetching tabletop RPG spell data — Pathfinder 1e/2e from Archives of Nethys and D&D 5e (SRD) from the Open5e API — and exporting structured JSON.
 
-> **Unofficial fan tool.** This project is not affiliated with, endorsed by, or sponsored by Paizo Inc. or Archives of Nethys. See [License and Legal](#license-and-legal) before scraping or redistributing data.
+> **Unofficial fan tool.** This project is not affiliated with, endorsed by, or sponsored by Paizo Inc., Archives of Nethys, Wizards of the Coast, or Open5e. See [License and Legal](#license-and-legal) before scraping or redistributing data.
 
 ## What It Does
 
-- Fetches a single spell from an Archives of Nethys detail page.
+- Fetches a single spell from an Archives of Nethys detail page or the Open5e API.
 - Scrapes many spells into one JSON array file.
-- Supports Pathfinder 1e and Pathfinder 2e spell pages.
+- Supports Pathfinder 1e, Pathfinder 2e, and D&D 5e (SRD 5.2) spells.
 - Uses conservative scraping defaults with configurable concurrency and delay.
 - Keeps fetch, parse, scrape, and export logic separated so new systems and sources can be added without rewriting the CLI.
 
@@ -21,8 +21,9 @@ Command-line utility for fetching Pathfinder 1e and Pathfinder 2e spell data fro
 | --- | --- | --- | --- | --- |
 | `pf2e` | `spell` | `aon-html` | yes | yes |
 | `pf1e` | `spell` | `aon-html` | yes | yes |
+| `dnd5e` | `spell` | `open5e` | yes | yes |
 
-The default pipeline options are `--system pf2e --type spell --source aon-html`.
+The default pipeline options are `--system pf2e --type spell --source aon-html`. `--source` defaults to `aon-html`, except when `--system dnd5e` is selected, in which case it defaults to `open5e`. The `dnd5e`/`open5e` pipeline reads the D&D 5e SRD 5.2 (2024 rules, 339 spells) from the [Open5e](https://open5e.com/) JSON API — no PDF or D&D Beyond scraping required.
 
 ## Prerequisites
 
@@ -61,6 +62,18 @@ Scrape PF1e spells:
 uv run python cli.py scrape --system pf1e --limit 10 -o pf1e_spells.json
 ```
 
+Scrape D&D 5e SRD spells from Open5e:
+
+```bash
+uv run python cli.py scrape --system dnd5e --limit 10 -o dnd5e_spells.json
+```
+
+Fetch one D&D 5e spell by its Open5e key (`--source` defaults to `open5e` for `dnd5e`):
+
+```bash
+uv run python cli.py fetch "https://api.open5e.com/v2/spells/srd-2024_fireball/" --system dnd5e
+```
+
 ## CLI Usage
 
 ### Fetch
@@ -84,7 +97,7 @@ Common fetch options:
 | `-o, --output` | generated from spell name | Output JSON file. |
 | `--system` | `pf2e` | RPG system to parse. |
 | `--type` | `spell` | Content type to parse. |
-| `--source` | `aon-html` | Source adapter to use. |
+| `--source` | `aon-html` (`open5e` for `dnd5e`) | Source adapter to use. |
 
 Examples:
 
@@ -115,7 +128,7 @@ Common scrape options:
 | `--location` | none | Optional source root location for discovery. |
 | `--system` | `pf2e` | RPG system to parse. |
 | `--type` | `spell` | Content type to parse. |
-| `--source` | `aon-html` | Source adapter to use. |
+| `--source` | `aon-html` (`open5e` for `dnd5e`) | Source adapter to use. |
 
 For larger scrapes, increase concurrency cautiously:
 
@@ -123,7 +136,7 @@ For larger scrapes, increase concurrency cautiously:
 uv run python cli.py scrape --tradition arcane --workers 4 --delay 0.25 -o scraped.json
 ```
 
-PF2e scrape discovery uses the AoN Elasticsearch endpoint. PF1e scrape discovery parses `https://aonprd.com/Spells.aspx?Class=All` for spell detail links.
+PF2e scrape discovery uses the AoN Elasticsearch endpoint. PF1e scrape discovery parses `https://aonprd.com/Spells.aspx?Class=All` for spell detail links. D&D 5e scrape discovery pages through the Open5e v2 spell list (`https://api.open5e.com/v2/spells/?document__key=srd-2024`); because that endpoint already returns the full spell objects, each one is parsed directly without a second per-spell request (so `--delay`/`--workers` have little effect for `dnd5e`). The `--tradition` filter applies only to PF2e.
 
 ## Output
 
@@ -146,6 +159,31 @@ Example PF2e HTML output:
 ```
 
 The HTML parser output preserves source-page field names where practical, such as `Name`, `Traits`, `Traditions`, and `Description`.
+
+Example D&D 5e (Open5e) output:
+
+```json
+{
+    "id": "fireball",
+    "Name": "Fireball",
+    "Level": 3,
+    "School": "Evocation",
+    "Casting Time": "action",
+    "Range": "150 feet",
+    "Components": "V, S, M (a ball of bat guano and sulfur)",
+    "Duration": "instantaneous",
+    "Ritual": false,
+    "Concentration": false,
+    "Classes": ["Sorcerer", "Wizard"],
+    "Description": "A bright streak flashes from you to a point you choose within range ...",
+    "Material": "a ball of bat guano and sulfur",
+    "Higher Levels": "The damage increases by 1d6 for each spell slot level above 3.",
+    "Source": "System Reference Document 5.2 © Wizards of the Coast, via Open5e (https://api.open5e.com), licensed under CC-BY-4.0",
+    "key": "srd-2024_fireball"
+}
+```
+
+Each D&D 5e record carries a `Source` attribution string, as required by CC-BY-4.0.
 
 ## Architecture
 
@@ -197,17 +235,18 @@ When changing parser behavior, validate against the sample HTML fixtures and add
 
 ## License and Legal
 
-**Disclaimer:** This is an unofficial, fan-made utility. It is **not affiliated with, endorsed by, or sponsored by Paizo Inc. or Archives of Nethys.** "Pathfinder", "Archives of Nethys", and related logos and marks are the property of their respective owners.
+**Disclaimer:** This is an unofficial, fan-made utility. It is **not affiliated with, endorsed by, or sponsored by Paizo Inc., Archives of Nethys, Wizards of the Coast, or Open5e.** "Pathfinder", "Archives of Nethys", "Dungeons & Dragons", "D&D", and related logos and marks are the property of their respective owners.
 
 **Code License:** The code for this utility is released under the [MIT License](LICENSE).
 
-**Data source and attribution:** The data this tool downloads and parses originates from [Archives of Nethys](https://aonprd.com/), which publishes Pathfinder content owned by Paizo Inc. The small sample files in `samples/` are included only as parser test fixtures. See [`ATTRIBUTION.md`](ATTRIBUTION.md) for the required notices.
+**Data source and attribution:** Pathfinder data originates from [Archives of Nethys](https://aonprd.com/), which publishes Pathfinder content owned by Paizo Inc. D&D 5e data originates from the [Open5e](https://open5e.com/) API, which serves the D&D 5e System Reference Document published by Wizards of the Coast. The small sample files in `samples/` are included only as parser test fixtures. See [`ATTRIBUTION.md`](ATTRIBUTION.md) for the required notices.
 
 **Data License:** The licensing for the game data depends on the system being parsed:
 
 - Pathfinder 1e data is governed by the [Open Game License (OGL)](https://opengamingfoundation.org/ogl.html).
 - Pathfinder 2e data is governed by the [Open RPG Creative (ORC) License](https://paizo.com/orclicense).
+- D&D 5e SRD data is governed by the [Creative Commons Attribution 4.0 (CC-BY-4.0)](https://creativecommons.org/licenses/by/4.0/) license. Every parsed `dnd5e` record includes a `Source` attribution string; preserve it when redistributing. Attribute as: *"This work includes material from the System Reference Document 5.2 ('SRD 5.2') by Wizards of the Coast LLC, available under the Creative Commons Attribution 4.0 International License."*
 
-When using, distributing, or publishing data scraped with this tool, **you** are responsible for complying with the respective license (including OGL §15 / ORC attribution obligations, which carry over to any redistributed output) and any other applicable policies specified by Paizo Inc. and Archives of Nethys.
+When using, distributing, or publishing data scraped with this tool, **you** are responsible for complying with the respective license (including OGL §15 / ORC attribution obligations and the CC-BY-4.0 attribution requirement, which carry over to any redistributed output) and any other applicable policies specified by the respective rights holders.
 
-**Responsible use:** Please scrape politely. Archives of Nethys is a community resource — use a conservative `--delay`, keep `--workers` low, and don't run large scrapes more often than you need to. The tool identifies itself with a descriptive `User-Agent`; do not modify it to impersonate a browser.
+**Responsible use:** Please scrape politely. Archives of Nethys and Open5e are community resources — use a conservative `--delay`, keep `--workers` low, and don't run large scrapes more often than you need to. The tool identifies itself with a descriptive `User-Agent`; do not modify it to impersonate a browser.

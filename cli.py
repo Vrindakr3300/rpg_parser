@@ -4,7 +4,7 @@ import sys
 
 from rpg_parser.core.pipeline import run_pipeline, run_scrape_pipeline
 from rpg_parser.core.ports import ExportTarget, FetchRequest, ScrapeRequest
-from rpg_parser.registry import get_pipeline, get_scrape_pipeline
+from rpg_parser.registry import default_source, get_pipeline, get_scrape_pipeline
 
 
 def create_valid_filename(spell_name: str) -> str:
@@ -18,7 +18,12 @@ def create_valid_filename(spell_name: str) -> str:
 def add_pipeline_args(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--system", default="pf2e", help="RPG system to parse. Defaults to pf2e.")
     parser.add_argument("--type", default="spell", dest="content_type", help="Content type to parse. Defaults to spell.")
-    parser.add_argument("--source", default="aon-html", help="Source adapter to use. Defaults to aon-html.")
+    parser.add_argument("--source", default=None, help="Source adapter to use. Defaults to aon-html (open5e for dnd5e).")
+
+
+def resolve_source(args: argparse.Namespace) -> None:
+    if args.source is None:
+        args.source = default_source(args.system)
 
 
 def build_fetch_parser() -> argparse.ArgumentParser:
@@ -52,6 +57,7 @@ def build_scrape_parser() -> argparse.ArgumentParser:
 
 
 def run_fetch(args: argparse.Namespace) -> None:
+    resolve_source(args)
     print(f"Fetching {args.url}...")
     pipeline = get_pipeline(args.system, args.content_type, args.source)
     print("Extracting data...")
@@ -70,6 +76,7 @@ def run_fetch(args: argparse.Namespace) -> None:
 
 
 def run_scrape(args: argparse.Namespace) -> None:
+    resolve_source(args)
     filters = {}
     if args.tradition:
         filters["tradition"] = args.tradition
